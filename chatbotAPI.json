@@ -1,0 +1,231 @@
+{
+  "info": {
+    "title": "API-chatbot-prouct"
+  },
+  "paths": {
+    "/tests-db": {
+      "get": {
+        "summary": "Test Database Connection",
+        "responses": {
+          "200": {
+            "description": "Database status",
+            "content": {
+              "application/json": {
+                "example": {"message": "Database connection successful"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/category/infer": {
+      "post": {
+        "summary": "Infer Category",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keywords": {"type": "array", "items": {"type": "string"}}
+                },
+                "required": ["keywords"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Category inferred",
+            "content": {
+              "application/json": {
+                "example": {
+                  "session_id": "abc123",
+                  "messages": [
+                    {
+                      "message_id": "msg1",
+                      "timestamp": "2025-03-12T07:51:50.236021+00:00Z",
+                      "sender": "chatbot",
+                      "text": "Danh mục suy luận: Công nghệ",
+                      "attachments": []
+                    }
+                  ],
+                  "context": {
+                    "conversation_state": "active",
+                    "intent": "category_inference",
+                    "entities": {
+                      "keywords": ["phone", "good"],
+                      "category": "Công nghệ",
+                      "date": "2025-03-12T07:51:50.236021+00:00Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Empty keywords",
+            "content": {
+              "application/json": {
+                "example": {"detail": "Keywords cannot be empty"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/analyzer/analyze": {
+      "post": {
+        "summary": "Analyze Text",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {"type": "string"},
+                  "session_id": {"type": "string"}
+                },
+                "required": ["query"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Analysis or clarification",
+            "content": {
+              "application/json": {
+                "example": {
+                  "session_id": "xyz789",
+                  "messages": [
+                    {
+                      "message_id": "msg2",
+                      "timestamp": "2025-03-12T07:51:50.236021+00:00Z",
+                      "sender": "chatbot",
+                      "text": "Bạn có thể nói rõ hơn không? Ví dụ như bạn muốn tìm điện thoại tốt về mặt nào?",
+                      "attachments": []
+                    }
+                  ],
+                  "context": {
+                    "conversation_state": "clarification_needed",
+                    "intent": "ambiguous_query",
+                    "entities": {
+                      "original_query": "Có điện thoại nào tốt không?",
+                      "date": "2025-03-12T07:51:50.236021+00:00Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Query classification failed",
+            "content": {
+              "application/json": {
+                "example": {"detail": "Không thể phân loại query"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/chatbot/chat": {
+      "post": {
+        "summary": "Chat",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {"type": "string"},
+                  "session_id": {"type": "string"}
+                },
+                "required": ["query"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chat response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "session_id": "def456",
+                  "messages": [
+                    {
+                      "message_id": "msg3",
+                      "timestamp": "2025-03-12T07:51:50.236021+00:00Z",
+                      "sender": "chatbot",
+                      "text": "Chào bạn! Tôi có thể giúp gì?",
+                      "attachments": []
+                    }
+                  ],
+                  "context": {
+                    "conversation_state": "active",
+                    "intent": "conversation",
+                    "entities": {
+                      "input_query": "Xin chào",
+                      "date": "2025-03-12T07:51:50.236021+00:00Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/chatbot/history": {
+      "post": {
+        "summary": "Get Chat History",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": {"type": "string"},
+                  "limit": {"type": "integer"}
+                },
+                "required": ["session_id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chat history",
+            "content": {
+              "application/json": {
+                "example": {
+                  "session_id": "def456",
+                  "messages": [
+                    {
+                      "message_id": "msg3",
+                      "timestamp": "2025-03-12T07:51:50.236021+00:00Z",
+                      "sender": "chatbot",
+                      "text": "Chào bạn! Tôi có thể giúp gì?",
+                      "attachments": []
+                    }
+                  ],
+                  "context": {
+                    "conversation_state": "active",
+                    "intent": "retrieve_history",
+                    "entities": {
+                      "total_messages": 2,
+                      "retrieved_count": 1,
+                      "date": "2025-03-12T07:51:50.236021+00:00Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
