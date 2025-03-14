@@ -57,7 +57,7 @@ Dự án sử dụng FastAPI để phát triển API và tích hợp trí tuệ 
    - Tạo file `.env` trong thư mục gốc
    - Copy nội dung tại `example.env` vào và sửa đổi
 
-5**Chạy ứng dụng locally:**
+5. **Chạy ứng dụng locally:**
    ```bash
    uvicorn app.main:app --reload --port 8000
    ```
